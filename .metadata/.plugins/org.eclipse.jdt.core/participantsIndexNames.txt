@@ -1,0 +1,5 @@
+INDEX VERSION 1.134
+D:\study\code\JAVA\JAVA PROJECTS\PROJECTS\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2900061935.index
+\E_LearningPlatform\src\main\java
+D:\study\code\JAVA\JAVA PROJECTS\PROJECTS\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1763033452.index
+\e_Learning_Platform\src\main\java

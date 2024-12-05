@@ -1,0 +1,33 @@
+package com.dao;
+
+import com.bean.LoginBean;
+import com.bean.SignupBean;
+import com.connect.DBConnect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class SignupDao {
+    public boolean signup(SignupBean u) throws SQLException {
+        String uname = u.getuName();
+        String upwd = u.getuPwd();
+        String fname = u.getfName();
+        String lname = u.getlName();
+        String email = u.getuEmail();
+        
+        try (Connection con = DBConnect.Connect();
+             PreparedStatement pt = con.prepareStatement(
+                "INSERT INTO user (userName, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?)")) {
+            
+            pt.setString(1, uname);
+            pt.setString(2, fname);
+            pt.setString(3, lname);
+            pt.setString(4, email);
+            pt.setString(5, upwd);
+            
+            int i = pt.executeUpdate();
+            return i > 0;
+        }
+    }
+}

@@ -1,0 +1,52 @@
+package com.dao;
+
+import com.bean.LoginBean;
+import com.bean.SignupBean;
+import com.connect.DBConnect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class SignupDao {
+    private int getNextSequentialId(Connection con) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement(
+                "SELECT COALESCE(MAX(id), 0) + 1 AS next_id FROM user")) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("next_id");
+            }
+        }
+        return 1; // If table is empty, start with 1
+    }
+
+    public boolean signup(SignupBean u) throws SQLException {
+        String uname = u.getuName();
+        String upwd = u.getuPwd();
+        String fname = u.getfName();
+        String lname = u.getlName();
+        String email = u.getuEmail();
+        Connection con = DBConnect.Connect();
+        PreparedStatement pt = null;
+        
+        try {
+            // Get the next sequential ID
+            int nextId = getNextSequentialId(con);
+            
+            pt = con.prepareStatement(
+                "INSERT INTO user (id, userName, firstName, lastName, email, password) VALUES (?, ?, ?, ?, ?, ?)");
+            pt.setInt(1, nextId);
+            pt.setString(2, uname);
+            pt.setString(3, fname);
+            pt.setString(4, lname);
+            pt.setString(5, email);
+            pt.setString(6, upwd);
+            
+            int i = pt.executeUpdate();
+            return i > 0;
+        } finally {
+            if (pt != null) pt.close();
+            if (con != null) con.close();
+        }
+    }
+}
